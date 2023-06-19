@@ -14,9 +14,9 @@ spec:
         apps.tanzu.vmware.com/workload-type: web
         carto.run/workload-name: test
         jp.vmware.tanzu/volumemount: nfs
-        jp.vmware.tanzu/volumemount.server: 1.1.1.1
-        jp.vmware.tanzu/volumemount.path: /path
-        jp.vmware.tanzu/volumemount.mountpath: /mountpath
+        jp.vmware.tanzu/volumemount-server: 1.1.1.1
+        jp.vmware.tanzu/volumemount-path: path.path
+        jp.vmware.tanzu/volumemount-mountpath: path.mountpath
     spec:
       containers:
         - image: harbor.cl01.lespaulstudioplus.info/docker-hub/library/nginx

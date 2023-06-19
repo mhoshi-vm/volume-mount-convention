@@ -21,20 +21,21 @@ public class VolumeMountConvention implements Convention {
         V1PodTemplateSpec podTemplateSpec = podConventionContext.spec().template();
 
         V1ObjectMeta meta = podTemplateSpec.getMetadata();
+        System.out.println(meta);
         if (meta != null) {
             Map<String, String> labels = meta.getLabels();
 
             if (labels != null &&
                     labels.get("jp.vmware.tanzu/volumemount") != null &&
                     labels.get("jp.vmware.tanzu/volumemount").equals("nfs") &&
-                    labels.get("jp.vmware.tanzu/volumemount.server") != null &&
-                    labels.get("jp.vmware.tanzu/volumemount.path") != null &&
-                    labels.get("jp.vmware.tanzu/volumemount.mountpath") != null) {
+                    labels.get("jp.vmware.tanzu/volumemount-server") != null &&
+                    labels.get("jp.vmware.tanzu/volumemount-path") != null &&
+                    labels.get("jp.vmware.tanzu/volumemount-mountpath") != null) {
 
                 V1Volume volume = new V1Volume();
                 V1NFSVolumeSource nfsVolumeSource = new V1NFSVolumeSource();
-                nfsVolumeSource.setServer(labels.get("jp.vmware.tanzu/volumemount.server"));
-                nfsVolumeSource.setPath(labels.get("jp.vmware.tanzu/volumemount.path"));
+                nfsVolumeSource.setServer(labels.get("jp.vmware.tanzu/volumemount-server"));
+                nfsVolumeSource.setPath(labels.get("jp.vmware.tanzu/volumemount-path").replaceFirst("^path", "").replaceAll("\\.", "/"));
 
                 volume.setName("nfs-mount");
                 volume.setNfs(nfsVolumeSource);
@@ -54,7 +55,7 @@ public class VolumeMountConvention implements Convention {
                                         new ArrayList<>();
                         V1VolumeMount volumeMount = new V1VolumeMount();
                         volumeMount.setName("nfs-mount");
-                        volumeMount.setMountPath(labels.get("jp.vmware.tanzu/volumemount.mountpath"));
+                        volumeMount.setMountPath(labels.get("jp.vmware.tanzu/volumemount-mountpath").replaceFirst("^path", "").replaceAll("\\.", "/"));
                         volumeMounts.add(volumeMount);
                         container.setVolumeMounts(volumeMounts);
                     }

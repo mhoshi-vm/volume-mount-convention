@@ -1,9 +1,9 @@
 apiVersion: conventions.carto.run/v1alpha1
 kind: ClusterPodConvention
 metadata:
-  name: volume-mount-convention
+  name: my-convention
 spec:
   priority: Early
   webhook:
     clientConfig:
-      url: https://volumemountconvention-convention-demo.tap01.cl01.lespaulstudioplus.info/convention
+      url: https://my-convention-convention-demo.tap01.cl01.lespaulstudioplus.info/convention

@@ -1,4 +1,4 @@
-SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='harbor.lespaulstudioplus.info/library/my-convention')
+SOURCE_IMAGE = os.getenv("SOURCE_IMAGE", default='harbor.cl01.lespaulstudioplus.info/library/my-convention')
 LOCAL_PATH = os.getenv("LOCAL_PATH", default='.')
 
 k8s_custom_deploy(
@@ -8,9 +8,10 @@ k8s_custom_deploy(
                " --source-image " + SOURCE_IMAGE +
                " --type web" +
                " --build-env BP_JVM_VERSION=17" +
+               " -n convention-demo " +
                " --yes >/dev/null" +
-               " && kubectl get workload my-convention -o yaml",
-    delete_cmd="tanzu apps workload delete my-convention --yes",
+               " && kubectl get workload my-convention -n convention-demo -o yaml",
+    delete_cmd="tanzu apps workload delete my-convention -n convention-demo --yes",
     deps=['pom.xml', './target/classes'],
     container_selector='workload',
     live_update=[
@@ -20,4 +21,4 @@ k8s_custom_deploy(
 
 k8s_resource('my-convention', port_forwards=["8080:8080"],
             extra_pod_selectors=[{'serving.knative.dev/service': 'my-convention'}])
-allow_k8s_contexts('tap-full')
+allow_k8s_contexts('tap-single')
